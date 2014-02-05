@@ -8,7 +8,7 @@ import common.PrintStuff;
 import common.ReadStuff;
 import sort.RadixSort;
 
-public class TestRadixSort {
+public class TestRadixManual {
 
 	public static void main(String[] args) {
 		
