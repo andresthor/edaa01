@@ -1,5 +1,7 @@
 package bst;
 
+import java.util.Scanner;
+
 public class BinarySearchTree<E extends Comparable<? super E>> {
 	BinaryNode<E> root;
     int size;
@@ -150,15 +152,26 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
 	
 	public static void main(String[] args) {
 		BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
-		BSTVisualizer bst = new BSTVisualizer("Tree Drawing", 1000, 600);
+		BSTVisualizer bst = new BSTVisualizer("Tree Drawing", 800, 600);
 		
-		for (int i = 50; i > 0; i--) { // Lägger in heltal från 1-50
+		for (int i = 30; i > 0; i--) { // Lägger in heltal från 1-30
 			tree.add(i);
 		}
 		tree.printTree();	// Skriver ut nodernas innehåll
 		tree.rebuild();		// Balanserar trädet
 		System.out.println("Height = " + tree.height() + " size = " + tree.size());
 		bst.drawTree(tree);
+
+	
+		// Om vi matar in heltal så kommer dessa att läggas i ett nytt träd som byggs
+		//och ritas efter varje input
+		tree = new BinarySearchTree<Integer>();
+		Scanner sc = new Scanner(System.in);
+		while (true) {
+			tree.add(sc.nextInt());
+			tree.rebuild();
+			bst.drawTree(tree);
+		}
 	}
 	
 	static class BinaryNode<E> {
