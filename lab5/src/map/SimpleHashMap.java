@@ -10,9 +10,8 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 
 	public SimpleHashMap() {
 		this(16);										// Anropar den andra konstruktorn med
-														// argumentet 16
-	}
-	
+	}													// argumentet 16
+
 	public SimpleHashMap(int capacity) {
 		this.capacity = capacity;	
 		table = (Entry<K, V>[]) new Entry[capacity];	// Skapar en array med Entry<K, V> objekt
@@ -20,8 +19,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	
 	private int index(K key) {
 		return Math.abs(key.hashCode() % capacity); 	// Omvandlar key först till en hashcode och
-														// normerar den sedan. 
-	}
+	}													// normerar den sedan. 
 	
 	private Entry<K, V> find(int index, K key) {
 		Entry<K, V> e = table[index];
