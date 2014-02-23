@@ -9,17 +9,18 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	private int capacity;
 
 	public SimpleHashMap() {
-		this(16);
+		this(16);										// Anropar den andra konstruktorn med
+														// argumentet 16
 	}
 	
 	public SimpleHashMap(int capacity) {
-		this.capacity = capacity;
-		table = (Entry<K, V>[]) new Entry[capacity];
+		this.capacity = capacity;	
+		table = (Entry<K, V>[]) new Entry[capacity];	// Skapar en array med Entry<K, V> objekt
 	}
 	
 	private int index(K key) {
-		//System.out.println("key: " + key + " key.hashCode: " + key.hashCode() + " % : " + key.hashCode() % 16);
-		return Math.abs(key.hashCode() % capacity);
+		return Math.abs(key.hashCode() % capacity); 	// Omvandlar key först till en hashcode och
+														// normerar den sedan. 
 	}
 	
 	private Entry<K, V> find(int index, K key) {
@@ -34,13 +35,12 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	}
 	
 	public V get(Object object) {
-		K key = (K) object;
-		Entry<K, V> e = find(index(key), key);
-		if (e != null)
+		K key = (K) object;								// Object -> K
+		Entry<K, V> e = find(index(key), key);			
+		if (e != null)									// Finns key i Entry[] ?
 			return e.getValue();
 		
 		return null;
-			
 	}
 
 	public boolean isEmpty() {
@@ -48,28 +48,28 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	}
 
 	public V put(K key, V value) {
-		Entry<K, V> e = find(index(key), key);
+		Entry<K, V> e = find(index(key), key);			// Söker om den redan finns
 		
-		if (e != null)
-			return e.setValue(value);
+		if (e != null)									// Om nyckeln fanns så ändrar vi motsvarande
+			return e.setValue(value);					// värde till value och returnerar det gamla
 		
-		e = new Entry<K, V>(key, value);
-		e.next = table[index(key)];
-		table[index(key)] = e;
+		e = new Entry<K, V>(key, value);				// Annars skapar vi Entry med key och value
+		e.next = table[index(key)];						// och lägger den *främst* i listan med mot-
+		table[index(key)] = e;							// svarande index
 		size++;
 		
-		if ((double) size / capacity > LOAD_FACTOR)
-			rehash();
+		if ((double) size / capacity > LOAD_FACTOR)		// om vi överstiger Load faktorn, rehash-ar
+			rehash();									// vi vårt map
 		
 		return null;
 	}
 	
 	private void rehash() {
-		Entry<K, V>[] oldTable = table;
+		Entry<K, V>[] oldTable = table;					// Skapar ny array + döper om den gamla
 		table = (Entry<K, V>[]) new Entry[capacity *= 2];
 		size = 0;
 		
-		for (int i = 0; i < oldTable.length; i++) {
+		for (int i = 0; i < oldTable.length; i++) {		// För alla värdena i gamla : lägg i nya
 			Entry<K, V> e = oldTable[i];
 			while (e != null) {
 				put(e.getKey(), e.getValue());
@@ -79,16 +79,16 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	}
 
 	public V remove(Object object) {
-		K key = (K) object;
-		Entry<K, V> e = find(index(key), key);
+		K key = (K) object;								// Object -> K
+		Entry<K, V> e = find(index(key), key);			// Söker om den finns
 		
 		if (e == null) {
-			return null;
-		} else if (e == table[index(key)]) {
-			table[index(key)] = table[index(key)].next;
+			return null;								// returnerar null om den inte finns
+		} else if (e == table[index(key)]) {			// om den motsv första elementet i listan
+			table[index(key)] = table[index(key)].next; // kan vi ta bort den direkt
 		} else {
-			Entry<K, V> itr = table[index(key)];
-			while (itr.next != e) {
+			Entry<K, V> itr = table[index(key)];		// Annars itererar vi genom listan och
+			while (itr.next != e) {						// tar bort den när den är funnen
 				itr = itr.next;
 			}
 			itr.next = itr.next.next;
@@ -105,11 +105,11 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	public String show() {
 		String str = "";
 		Entry<K, V> e;
-		for (int i = 0; i < table.length; i++) {
-			e = table[i];
-			str += String.format("%-10s", i);
-			while (e != null) {
-				str += String.format("%-10s", e);
+		for (int i = 0; i < table.length; i++) {		// för alla index i listan :
+			e = table[i];								// skapar vi Entry objekt
+			str += String.format("%-10s", i);			// Skriver ut index + 10 mellanslag
+			while (e != null) {							// itererar över alla Entry i listan
+				str += String.format("%-10s", e);		// och skriver ut de
 				e = e.next;
 			}
 			str += "\n";
@@ -148,8 +148,13 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	}
 	
 	public static void main(String[] args) {
-		SimpleHashMap<Integer, Integer> intMap = new SimpleHashMap<Integer, Integer>();
+		//SimpleHashMap<Integer, Integer> intMap = new SimpleHashMap<Integer, Integer>();
 		SimpleHashMap<String, String> stringMap = new SimpleHashMap<String, String>();
+		
+		// Ett enkelt program som loopar och ber användaren först om Key och sedan Value
+		// Lägger all input i SimpleHashMap för strängar
+		// Slutar loopa och skriver ut resultatet om användaren anger 'quit' som antingen key
+		// eller value
 		
 		String str1, str2;
 		str1 = str2 = "";
