@@ -1,16 +1,21 @@
 package misc;
 
+import java.util.LinkedList;
+
 public class MiscTesting {
 
 	public static void main(String[] args) {
-		String str = "";
-		String[] array = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+		LinkedList<String> list = new LinkedList<String>();
 		
-		for (int i = 0; i < array.length; i++) {
-			str = str + String.format("%-10s", i) + array[i] + "\n";
+		list.add("First");
+		list.add("Second");
+		list.add("Third");
+		list.add("First");
+		list.add("Fourth");
+		
+		for (String str : list) {
+			System.out.println(str);
 		}
-		
-		System.out.print(str);
 		
 	}
 
